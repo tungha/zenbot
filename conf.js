@@ -13,7 +13,7 @@ c.mongo.replicaSet = null
 // default selector. only used if omitting [selector] argument from a command.
 c.selector = 'binance.BTC-USDT'
 // name of default trade strategy
-c.strategy = 'ta_ema'
+c.strategy = 'ta_macd'
 
 // Exchange API keys:
 
