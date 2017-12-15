@@ -8,7 +8,7 @@ module.exports = function container(get, set, clear) {
 		description: 'Buy when (EMA - last(EMA) > 0) and sell when (EMA - last(EMA) < 0). Optional buy on low RSI.',
 
 		getOptions: function () {
-			this.option('period', 'period length', String, '30m')
+			this.option('period', 'period length', String, '15m')
 			this.option('min_periods', 'min. number of history periods', Number, 52)
 			this.option('trend_ema', 'number of periods for trend EMA', Number, 2)
 			this.option('neutral_rate', 'avoid trades if abs(trend_ema) under this float (0 to disable, "auto" for a variable filter)', Number, 0)
