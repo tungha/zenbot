@@ -78,9 +78,21 @@ module.exports = function container(get, set, clear) {
 				var sign = delta * lastDelta;
 				if (sign < 0) {
 					if (delta > 0) {
+						console.log("decide to buy %j", {
+							lastDelta: lastDelta,
+							delta: delta,
+							currentEma: s.period.trend_ema,
+							lastEma: s.lookback[0].trend_ema
+						});
 						s.signal = 'buy'
 					} else {
 						s.signal = 'sell'
+						console.log("decide to sell %j", {
+							lastDelta: lastDelta,
+							delta: delta,
+							currentEma: s.period.trend_ema,
+							lastEma: s.lookback[0].trend_ema
+						});
 					}
 				}
 
