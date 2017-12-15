@@ -71,8 +71,10 @@ module.exports = function container(get, set, clear) {
 			      }
 			*/
 			s.signal = null;  // hold
-			if (s.period.trend_ema && s.lookback[0] && s.lookback[0].trend_ema && lastDelta) {
+			if (s.period.trend_ema && s.lookback[0] && s.lookback[0].trend_ema) {
 				var delta = s.period.trend_ema - s.lookback[0].trend_ema;
+				if (lastDelta === 0)
+					lastDelta = delta;
 				var sign = delta * lastDelta;
 				if (sign < 0) {
 					if (delta > 0) {
