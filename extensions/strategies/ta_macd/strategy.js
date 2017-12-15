@@ -7,7 +7,7 @@ module.exports = function container(get, set, clear) {
 		name: 'ta_ema',
 		description: 'Buy when (EMA - last(EMA) > 0) and sell when (EMA - last(EMA) < 0). Optional buy on low RSI.',
 
-		getOptions: function() {
+		getOptions: function () {
 			this.option('period', 'period length', String, '15m')
 			this.option('min_periods', 'min. number of history periods', Number, 52)
 			this.option('trend_ema', 'number of periods for trend EMA', Number, 2)
@@ -16,31 +16,31 @@ module.exports = function container(get, set, clear) {
 			this.option('oversold_rsi', 'buy when RSI reaches this value', Number, 0)
 		},
 
-		calculate: function(s) {
-			get('lib.ta_ema')(s, 'trend_ema', s.options.trend_ema)
-				/*
-				      if (s.options.oversold_rsi) {
-				        // sync RSI display with oversold RSI periods
-				        s.options.rsi_periods = s.options.oversold_rsi_periods
-				        get('lib.rsi')(s, 'oversold_rsi', s.options.oversold_rsi_periods)
-				        if (!s.in_preroll && s.period.oversold_rsi <= s.options.oversold_rsi && !s.oversold && !s.cancel_down) {
-				          s.oversold = true
-				          if (s.options.mode !== 'sim' || s.options.verbose) console.log(('\noversold at ' + s.period.oversold_rsi + ' RSI, preparing to buy\n').cyan)
-				        }
-				      }
-				      if (s.period.trend_ema && s.lookback[0] && s.lookback[0].trend_ema) {
-				        s.period.trend_ema_rate = (s.period.trend_ema - s.lookback[0].trend_ema) / s.lookback[0].trend_ema * 100
-				      }
-				      if (s.options.neutral_rate === 'auto') {
-				        get('lib.stddev')(s, 'trend_ema_stddev', Math.floor(s.options.trend_ema / 2), 'trend_ema_rate')
-				      }
-				      else {
-				        s.period.trend_ema_stddev = s.options.neutral_rate
-				      }
-				*/
+		calculate: function (s) {
+			get('lib.ema')(s, 'trend_ema', s.options.trend_ema)
+			/*
+						if (s.options.oversold_rsi) {
+							// sync RSI display with oversold RSI periods
+							s.options.rsi_periods = s.options.oversold_rsi_periods
+							get('lib.rsi')(s, 'oversold_rsi', s.options.oversold_rsi_periods)
+							if (!s.in_preroll && s.period.oversold_rsi <= s.options.oversold_rsi && !s.oversold && !s.cancel_down) {
+								s.oversold = true
+								if (s.options.mode !== 'sim' || s.options.verbose) console.log(('\noversold at ' + s.period.oversold_rsi + ' RSI, preparing to buy\n').cyan)
+							}
+						}
+						if (s.period.trend_ema && s.lookback[0] && s.lookback[0].trend_ema) {
+							s.period.trend_ema_rate = (s.period.trend_ema - s.lookback[0].trend_ema) / s.lookback[0].trend_ema * 100
+						}
+						if (s.options.neutral_rate === 'auto') {
+							get('lib.stddev')(s, 'trend_ema_stddev', Math.floor(s.options.trend_ema / 2), 'trend_ema_rate')
+						}
+						else {
+							s.period.trend_ema_stddev = s.options.neutral_rate
+						}
+			*/
 		},
 
-		onPeriod: function(s, cb) {
+		onPeriod: function (s, cb) {
 			/*
 			      if (!s.in_preroll && typeof s.period.oversold_rsi === 'number') {
 			        if (s.oversold) {
@@ -70,8 +70,8 @@ module.exports = function container(get, set, clear) {
 			        }
 			      }
 			*/
-
-			if (s.period.trend_ema && s.lookback[0] && s.lookback[0].trend_ema) {
+			s.signal = null;  // hold
+			if (s.period.trend_ema && s.lookback[0] && s.lookback[0].trend_ema && lastDelta) {
 				var delta = s.period.trend_ema - s.lookback[0].trend_ema;
 				var sign = delta * lastDelta;
 				if (sign < 0) {
@@ -87,7 +87,7 @@ module.exports = function container(get, set, clear) {
 			cb()
 		},
 
-		onReport: function(s) {
+		onReport: function (s) {
 			var cols = []
 			if (typeof s.period.trend_ema_stddev === 'number') {
 				var color = 'grey'
