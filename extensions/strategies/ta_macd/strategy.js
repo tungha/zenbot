@@ -86,11 +86,19 @@ module.exports = function container(get, set, clear) {
                         //     lastEma: s.lookback[0].trend_ema
                         // });
                         if (s.period.trend_ema < s.period.trend_ema_fast && s.period.trend_ema < s.period.trend_ema_slow) {
-                            s.signal = 'buy'
+                            var d1 = 100 * ((s.period.trend_ema_fast - s.period.trend_ema) / s.period.trend_ema);
+                            var d2 = 100 * ((s.period.trend_ema_slow - s.period.trend_ema) / s.period.trend_ema);
+                            if (d1 > 0.2 && d2 > 0.2) {
+                                s.signal = 'buy'
+                            }
                         }
                     } else if (this.lastLastEma < this.lastEma && this.lastEma > s.period.trend_ema) {
                         if (s.period.trend_ema > s.period.trend_ema_fast && s.period.trend_ema > s.period.trend_ema_slow) {
-                            s.signal = 'sell'
+                            var d1 = 100 * ((s.period.trend_ema - s.period.trend_ema_fast) / s.period.trend_ema);
+                            var d2 = 100 * ((s.period.trend_ema - s.period.trend_ema_slow) / s.period.trend_ema);
+                            if (d1 > 0.2 && d2 > 0.2) {
+                                s.signal = 'sell'
+                            }
                         }
                         // console.log("decide to sell %j", {
                         //     lastEma: this.lastEma,
