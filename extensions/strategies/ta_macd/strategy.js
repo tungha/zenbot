@@ -86,7 +86,7 @@ module.exports = function container(get, set, clear) {
                         s.signal = 'buy'
                     } else if (this.lastLastEma < this.lastEma && this.lastEma > s.period.trend_ema) {
                         s.signal = 'sell'
-                        console.log("decide to buy %j", {
+                        console.log("decide to sell %j", {
                             lastEma: this.lastEma,
                             lastLastEma: this.lastLastEma,
                             currentEma: s.period.trend_ema,
