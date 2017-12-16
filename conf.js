@@ -104,20 +104,20 @@ c.buy_stop_pct = 0
 // enable trailing sell stop when reaching this % profit (0 to disable)
 c.profit_stop_enable_pct = 0
 // maintain a trailing stop this % below the high-water mark of profit
-c.profit_stop_pct = 1
+c.profit_stop_pct = 99
 
 // Order execution rules:
 
 // avoid trading at a slippage above this pct
 c.max_slippage_pct = 5
 // buy with this % of currency balance (WARNING : sim won't work properly if you set this value to 100)
-c.buy_pct = 99
+c.buy_pct = 33
 // sell with this % of asset balance (WARNING : sim won't work properly if you set this value to 100)
 c.sell_pct = 99
 // ms to adjust non-filled order after
 c.order_adjust_time = 5000
 // avoid selling at a loss below this pct set to 0 to ensure selling at a higher price...
-c.max_sell_loss_pct = 25
+c.max_sell_loss_pct = 0
 // ms to poll order status
 c.order_poll_time = 5000
 // ms to wait for settlement (after an order cancel)
