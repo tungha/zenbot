@@ -40,7 +40,6 @@ module.exports = function container(get, set, clear) {
 							s.period.trend_ema_stddev = s.options.neutral_rate
 						}
 			*/
-            console.log("new ema: " + s.period.trend_ema);
         },
 
         onPeriod: function (s, cb) {
