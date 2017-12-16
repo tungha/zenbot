@@ -88,7 +88,7 @@ module.exports = function container(get, set, clear) {
                         if (s.period.trend_ema < s.period.trend_ema_fast && s.period.trend_ema < s.period.trend_ema_slow) {
                             var d1 = 100 * ((s.period.trend_ema_fast - s.period.trend_ema) / s.period.trend_ema_fast);
                             var d2 = 100 * ((s.period.trend_ema_slow - s.period.trend_ema) / s.period.trend_ema_slow);
-                            if (d1 > 0.2 && d2 > 0.2) {
+                            if (d1 > 0.5 && d2 > 0.5) {
                                 s.signal = 'buy'
                             }
                         }
