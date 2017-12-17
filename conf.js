@@ -11,7 +11,7 @@ c.mongo.password = null
 c.mongo.replicaSet = null
 
 // default selector. only used if omitting [selector] argument from a command.
-c.selector = 'binance.BTC-USDT'
+c.selector = 'binance.IOTA-BTC'
 // name of default trade strategy
 c.strategy = 'ta_macd'
 
