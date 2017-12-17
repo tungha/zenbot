@@ -13,7 +13,7 @@ module.exports = function container(get, set, clear) {
         getOptions: function () {
             this.option('period', 'period length', String, '6h')
             this.option('min_periods', 'min. number of history periods', Number, 30)
-            this.option('trend_ema', 'number of periods for trend EMA', Number, 3)
+            this.option('trend_ema', 'number of periods for trend EMA', Number, 4)
             this.option('neutral_rate', 'avoid trades if abs(trend_ema) under this float (0 to disable, "auto" for a variable filter)', Number, 0)
             this.option('oversold_rsi_periods', 'number of periods for oversold RSI', Number, 20)
             this.option('oversold_rsi', 'buy when RSI reaches this value', Number, 0)
@@ -21,7 +21,7 @@ module.exports = function container(get, set, clear) {
 
         calculate: function (s) {
             get('lib.ema')(s, 'trend_ema', s.options.trend_ema)
-            get('lib.ema')(s, 'trend_ema_fast', 4)
+            get('lib.ema')(s, 'trend_ema_fast', 6)
             get('lib.ema')(s, 'trend_ema_slow', 24)
 			/*
 						if (s.options.oversold_rsi) {
