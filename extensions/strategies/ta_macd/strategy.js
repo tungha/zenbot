@@ -8,11 +8,12 @@ module.exports = function container(get, set, clear) {
 
         lastLastEma: 0,
         lastEma: 0,
+        lastFastEma: 0,
 
         getOptions: function () {
-            this.option('period', 'period length', String, '15m')
-            this.option('min_periods', 'min. number of history periods', Number, 60)
-            this.option('trend_ema', 'number of periods for trend EMA', Number, 6)
+            this.option('period', 'period length', String, '6h')
+            this.option('min_periods', 'min. number of history periods', Number, 30)
+            this.option('trend_ema', 'number of periods for trend EMA', Number, 4)
             this.option('neutral_rate', 'avoid trades if abs(trend_ema) under this float (0 to disable, "auto" for a variable filter)', Number, 0)
             this.option('oversold_rsi_periods', 'number of periods for oversold RSI', Number, 20)
             this.option('oversold_rsi', 'buy when RSI reaches this value', Number, 0)
@@ -20,7 +21,7 @@ module.exports = function container(get, set, clear) {
 
         calculate: function (s) {
             get('lib.ema')(s, 'trend_ema', s.options.trend_ema)
-            get('lib.ema')(s, 'trend_ema_fast', 12)
+            get('lib.ema')(s, 'trend_ema_fast', 6)
             get('lib.ema')(s, 'trend_ema_slow', 24)
 			/*
 						if (s.options.oversold_rsi) {
@@ -73,18 +74,13 @@ module.exports = function container(get, set, clear) {
 			          s.signal = !s.acted_on_trend ? 'sell' : null
 			        }
 			      }
-			*/
-            //console.log("on period: %j", s.period);
+            */
+
+            /* // triple ema
             if (!s.in_preroll) {
                 s.signal = null;  // hold
                 if (s.period.trend_ema) {
                     if (this.lastLastEma > this.lastEma && this.lastEma < s.period.trend_ema) {
-                        // console.log("decide to buy %j", {
-                        //     lastEma: this.lastEma,
-                        //     lastLastEma: this.lastLastEma,
-                        //     currentEma: s.period.trend_ema,
-                        //     lastEma: s.lookback[0].trend_ema
-                        // });
                         if (s.period.trend_ema < s.period.trend_ema_fast && s.period.trend_ema < s.period.trend_ema_slow) {
                             var d1 = 100 * ((s.period.trend_ema_fast - s.period.trend_ema) / s.period.trend_ema_fast);
                             var d2 = 100 * ((s.period.trend_ema_slow - s.period.trend_ema) / s.period.trend_ema_slow);
@@ -96,23 +92,32 @@ module.exports = function container(get, set, clear) {
                         if (s.period.trend_ema > s.period.trend_ema_fast && s.period.trend_ema > s.period.trend_ema_slow) {
                             var d1 = 100 * ((s.period.trend_ema - s.period.trend_ema_fast) / s.period.trend_ema_fast);
                             var d2 = 100 * ((s.period.trend_ema - s.period.trend_ema_slow) / s.period.trend_ema_slow);
-                            //if (d1 > 0.2 && d2 > 0.2) 
-                            {
+                            if (d1 > 0.2 && d2 > 0.2) {
                                 s.signal = 'sell'
                             }
                         }
-                        // console.log("decide to sell %j", {
-                        //     lastEma: this.lastEma,
-                        //     lastLastEma: this.lastLastEma,
-                        //     currentEma: s.period.trend_ema,
-                        //     lastEma: s.lookback[0].trend_ema
-                        // });
                     }
 
                     this.lastLastEma = this.lastEma;
                     this.lastEma = s.period.trend_ema;
                 }
             }
+            */
+
+            if (!s.in_preroll) {
+                s.signal = null;  // hold
+                if (s.period.trend_ema) {
+                    if (this.lastEma < this.lastFastEma && s.period.trend_ema >= s.period.trend_ema_fast) {
+                        s.signal = 'buy'
+                    } else if (this.lastEma > this.lastFastEma && s.period.trend_ema <= s.period.trend_ema_fast) {
+                        s.signal = 'sell'
+                    }
+
+                    this.lastEma = s.period.trend_ema;
+                    this.lastFastEma = s.period.trend_ema_fast;
+                }
+            }
+
             cb()
         },
 
