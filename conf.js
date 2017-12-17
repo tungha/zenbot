@@ -98,13 +98,13 @@ c.therock.secret = 'YOUR-SECRET'
 // Optional stop-order triggers:
 
 // sell if price drops below this % of bought price (0 to disable)
-c.sell_stop_pct = 0
+c.sell_stop_pct = 2
 // buy if price surges above this % of sold price (0 to disable)
 c.buy_stop_pct = 0
 // enable trailing sell stop when reaching this % profit (0 to disable)
-c.profit_stop_enable_pct = 0
+c.profit_stop_enable_pct = 5
 // maintain a trailing stop this % below the high-water mark of profit
-c.profit_stop_pct = 99
+c.profit_stop_pct = 10
 
 // Order execution rules:
 
