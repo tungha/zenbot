@@ -111,7 +111,7 @@ c.profit_stop_pct = 99
 // avoid trading at a slippage above this pct
 c.max_slippage_pct = 5
 // buy with this % of currency balance (WARNING : sim won't work properly if you set this value to 100)
-c.buy_pct = 33
+c.buy_pct = 99
 // sell with this % of asset balance (WARNING : sim won't work properly if you set this value to 100)
 c.sell_pct = 99
 // ms to adjust non-filled order after
